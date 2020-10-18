@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type ="text/css" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type ="text/css" href="bootstrap/css/toastr.min.css" >
+    <script src="bootstrap/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/toastr.min.js"></script> 
+    <script src="bootstrap/holder.min.js"></script>   
+    <title>登录界面</title>
+    <style>
+      *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }.login{
+            height: 360px;
+            width: 600px;
+            border: 1px solid  black; 
+            margin: 180px auto; 
+            background-color: rgba(250, 250, 250, 0.3);     
+            border-radius: 12px;
+        }
+        body{
+            width: 100%;
+   			height: 100%;
+            background-image: url(img/login0.jpg);
+            opacity: 1; 
+		    background-repeat: no-repeat;
+		    background-attachment: fixed;
+		    background-size: 100% 100%;
+        }
+        .login_body{
+            height: 240px;
+            width: 500px;
+            margin-left: 130px;
+            margin-top: 30px;
+        }
+        .head{   
+          height: 80px;
+          width: 100%;
+          background-color: rgba(250, 250, 250, 0.5);
+          border-bottom: 1px solid black; 
+          border-radius: 11px 11px 0 0;
+          line-height:80px;
+          font-family: inherit;
+		  font-weight: 500;
+		  color: inherit;
+		  font-size: 36px;
+		  text-align: center;
+        }
+        .login_content{
+        height:100%;
+        width:100%;
+        }
+        .yzm{
+          cursor: pointer;
+          margin-bottom: -12px;
+        }.info_span{ 
+        color:#DC134C;
+        line-height:32px;
+        font-weight:600; 
+        font-size:14px;
+        }.info_h5{
+        cursor:pointer;
+        float:left;
+        margin-left:35%;
+        color:#0099FF;
+        font-size:18px;
+        }.modal .control-label{
+	    padding-top:7px;
+	    }.modal-body .row{
+	    margin-bottom:15px;
+	    }#userName{
+	    padding-left:34px; 
+	    }#password{
+	    padding-left:34px; 
+	    }#VerificationCode{
+	    padding-left:34px;
+	    }.img_user{
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        left:19px;
+        top:5px; 
+      }.login_label{
+      padding:7px 0 0 0;
+      }.form-control{
+      font-size:16px; 
+      }.modal-header{
+      background-color:#33cc99;
+      border-radius:5px 5px 0 0;
+      } .img_newuser{
+      	width: 24px;
+        height: 24px;
+        position: absolute;
+        top:5px;
+        left:18px;
+      } .lookPsd{
+      	width: 24px;
+        height: 24px;
+        position: absolute;
+        top:5px;
+        right:18px;
+        cursor:pointer;
+      }
+      #myModal_new .form-control{
+      	padding-left:32px;
+      }.model_errorInfo{
+	      height:34px;
+	      line-height:34px;
+	      padding:0 5px 0 0;
+	      color:#c00202
+      }.ok{
+      	display:none; 
+      }.error{
+      	display:none;
+      }.img_ok{     	
+      	width: 24px;
+        height: 24px;
+        position: absolute;
+        top:4px;
+        right:-18px;
+        display:block;
+      }
+    </style>  
+</head>
+<body> 
+    <div class="login">
+        <div class="head">
+           		 欢迎访问停车场管理系统   
+        </div>
+        <div class = "login_content">
+        <div class="login_body">
+          <form class="form-horizontal" method="POST" id="formLogin">
+            <div class="form-group">
+              <label for="userName" class="col-sm-2 control-label login_label">用户名：</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="userName" placeholder="用户名" name="userName">
+                <img src="img/username.png" alt="" class="img_user"> 
+              </div>      
+              <span class="col-sm-4 info_span" id = "error_Username"></span>
+            </div>
+            <div class="form-group">
+              <label for="password" class="col-sm-2 control-label login_label">密码：</label>
+              <div class="col-sm-6">
+                <input type="password" class="form-control" id="password" placeholder="密码" name="password">
+                <img src="img/psd.png" alt="" class="img_user"> 
+              </div>
+               <span class="col-sm-4 info_span" id = "error_Userpsd"></span>
+            </div>
+            <div class="form-group">
+              <label for="Verification Code" class="col-sm-2 control-label login_label">验证码：</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" id="VerificationCode" placeholder="验证码" name="VerificationCode">
+                <img src="img/yzm.png" alt="" class="img_user">  
+              </div>
+              <div class="col-sm-4"><img src="/week2/CreateVCodeImageController.do" alt="" title="看不清楚，换一张" class="yzm" id="yzmimg"></div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-6">
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" id = "checkbox"> 一周内免登陆
+                  </label>                 
+                </div>
+              </div>  
+               <span class="col-sm-4" id = "error_yzm" style = "font-size:14px;font-weight:600;color:#DC143C;"></span>        
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-3">
+                <button type = "button" class="btn btn-success" id="btn_new" data-toggle="modal" data-target="#myModal_new">注册</button> 
+              </div>
+              <div class="col-sm-3"> 
+              	<button type = "button" class="btn btn-info" id="btn_login">登录</button>              
+              </div>
+            </div>
+          </form>
+      </div>
+      </div>
+    </div>
+    	 <!--注册模态框-->
+	<div class="modal fade add_modle" tabindex="-1" role="dialog" id = "myModal_new" data-backdrop="static" data-keyboard="false">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" style = "color:white">注册</h4>   	             
+	      </div>
+	      <div class="modal-body">
+ 	         <div class="row">
+              	<label for="NewModelUserName" class="col-sm-3 col-sm-offset-2 control-label">用户名：</label>
+              	<div class="col-sm-6" style="margin-left:-50px;" id = "div_NewModelUserName">
+              	<input type="text" class="form-control" id="NewModelUserName" placeholder="用户名" name="NewModelUserName">
+              	<img src="img/username1.png" alt="" class="img_newuser">
+              	<img src="img/ok.png" alt="" class="ok">
+              	<img src="img/error.png" alt="" class="error">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo0"></div>	            
+            </div>
+            <div class="row">
+              	<label for="NewModelName" class="col-sm-3 col-sm-offset-2 control-label">真实姓名：</label>
+              	<div class="col-sm-6" style="margin-left:-50px;" id = "div_NewModelName">
+              	<input type="text" class="form-control" id="NewModelName" placeholder="真实姓名" name="NewModelName">
+              	<img src="img/username1.png" alt="" class="img_newuser">
+              	<img src="img/ok.png" alt="" class="ok">
+              	<img src="img/error.png" alt="" class="error">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo1"></div>	         
+            </div>
+            <div class="row">
+              	<label for="NewModelProvince" class="col-sm-3 col-sm-offset-2 control-label">选择省份：</label>
+              	<div class="col-sm-6" style = "margin-left:-50px;" id = "div_NewModelProvince">             	
+				    <select class="form-control" id = "NewModelProvince">
+ 				         <option value = "">请选择省份</option> 
+				    </select>
+				    <img src="img/city.png" alt="" class="img_newuser"> 	
+				    <img src="img/ok.png" alt="" class="ok">		     
+				</div> 
+				  <div class = "col-sm-2 model_errorInfo" id = "model_errorInfo2"></div>         				     		       
+            </div>
+            <div class="row">
+              	<label for="NewModelCity" class="col-sm-3 col-sm-offset-2 control-label">选择城市：</label>
+              	<div class="col-sm-6" style = "margin-left:-50px;" id = "div_NewModelCity">              
+				    <select class="form-control" id = "NewModelCity">
+				        <option value = "">请选择城市</option>
+				    </select>  
+				    <img src="img/city.png" alt="" class="img_newuser">
+				    <img src="img/ok.png" alt="" class="ok">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo3"></div>            				     		       
+            </div> 
+            <div class="row">
+              	<label for="NewModelEmail" class="col-sm-3 col-sm-offset-2 control-label">邮箱：</label>
+              	<div class="col-sm-6" style="margin-left:-50px;" id = "div_NewModelEmail">
+              	<input type="text" class="form-control" id="NewModelEmail" placeholder="邮箱" name="NewModelEmail">
+              	<img src="img/email.png" alt="" class="img_newuser">
+              	<img src="img/ok.png" alt="" class="ok">
+              	<img src="img/error.png" alt="" class="error">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo4"></div>	         
+            </div>            
+            <div class="row">
+              	<label for="NewModelPsd" class="col-sm-3 col-sm-offset-2 control-label">密码：</label>
+              	<div class="col-sm-6" style="margin-left:-50px;" id = "div_NewModelPsd">
+              	<input type="password" class="form-control" id="NewModelPsd" placeholder="密码" name="NewModelPsd">
+              	<img src="img/psd1.png" alt="" class="img_newuser"> 
+              	<img src="img/lookPsd.png" alt="" class="lookPsd" id = "lookpsd">
+              	<img src="img/ok.png" alt="" class="ok">
+              	<img src="img/error.png" alt="" class="error">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo5"></div>	         
+            </div>
+            <div class="row">
+              	<label for="NewModelpsd2" class="col-sm-3 col-sm-offset-2 control-label">确认密码：</label>
+              	<div class="col-sm-6" style="margin-left:-50px;" id = "div_NewModelpsd2">
+              	<input type="password" class="form-control" id="NewModelpsd2" placeholder="确认密码" name="NewModelpsd2">
+              	<img src="img/psd1.png" alt="" class="img_newuser">
+              	<img src="img/lookPsd.png" alt="" class="lookPsd" id = "lookPsd"> 
+              	<img src="img/ok.png" alt="" class="ok">
+              	<img src="img/error.png" alt="" class="error">
+              	</div>
+              	<div class = "col-sm-2 model_errorInfo" id = "model_errorInfo6"></div>	         
+            </div>                                                 
+	      </div>
+	      <div class="modal-footer">	      	
+	      <a data-dismiss="modal" class="info_h5">已有账号,请登陆</a>  
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button> 
+	        <button type="button" class="btn btn-info" id = "addModelButton">注册</button> 
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->   
+</body>
+
+<script>
+$(document).ready(function () {
+	//初始化toastr
+	toastr.options = {
+			"positionClass":"toast-top-center",  //窗口显示位置
+			"timeOut": "3500",
+	}
+	getCookie(); //检查本地是否有cookie如果有cookie就自动登陆
+	
+	/*初始化省份下拉框*/
+	 $.ajax({
+         type: "GET",
+         url: "/week2/QueryProvince.do",
+         contentType: "application/x-www-form-urlencoded;charset=utf-8",
+         data:{provinceid:""},
+         dataType: "json",	             
+         success: function (data) {  
+        	 //console.log(data);
+        	 for(var i = 0;i < data.length; i++)
+        		 {
+        		    $("#NewModelProvince").append("<option value='"+data[i].provinceId+"'>"+data[i].provinceName+"</option>");
+        		 	//为Select追加一个Option(下拉项)
+        		 }
+         },
+         error: function (error) {
+             alert("请求后台失败！");
+         }
+}); 
+}
+);
+</script>
+<script>
+/**
+ * 
+ *注册数据校验
+ * 
+ */
+ 
+ 
+$("#NewModelUserName").blur(function(){
+	if($("#NewModelUserName").val() == "" || $("#NewModelUserName").val() == null) 
+		{			
+			$("#div_NewModelUserName .error").removeClass("img_ok");
+			$("#div_NewModelUserName .ok").removeClass("img_ok");
+			$("#model_errorInfo0").html("用户名不能空!");
+			
+		}
+	else
+		{
+			$("#model_errorInfo0").html("");
+			var patt = /^[a-zA-Z]{1}[a-zA-Z\d]{3,14}$/;//以字母开头，由字母和数字组成，长度4-15;
+			if(patt.test($("#NewModelUserName").val()))
+				{
+					$("#div_NewModelUserName .error").removeClass("img_ok");
+					$("#div_NewModelUserName .ok").addClass("img_ok");
+									
+				}	
+			else{
+				$("#div_NewModelUserName .ok").removeClass("img_ok");
+				$("#div_NewModelUserName .error").addClass("img_ok");
+				toastr.warning("用户名必须是字母开头，由字母和数字组成，\n并且长度4-15个字符");
+			
+			}
+		} 
+});
+$("#NewModelName").blur(function(){
+	if($("#NewModelName").val() == "" || $("#NewModelName").val() == null) 
+		{			
+			$("#div_NewModelName .error").removeClass("img_ok");
+			$("#div_NewModelName .ok").removeClass("img_ok");	
+			$("#model_errorInfo1").html("真实名不能空!");
+					
+		}
+	else
+		{
+			$("#model_errorInfo1").html("");
+			var patt = /^[\u4e00-\u9fa5]{2,4}$/;//真实姓名只能是2-4长度的中文
+			if(patt.test($("#NewModelName").val()))
+				{
+					$("#div_NewModelName .error").removeClass("img_ok");
+					$("#div_NewModelName .ok").addClass("img_ok");
+										
+				}	
+			else
+				{
+					$("#div_NewModelName .ok").removeClass("img_ok");
+					$("#div_NewModelName .error").addClass("img_ok");
+					toastr.warning("真实姓名只能是2-4长度的中文");
+					
+				}				
+		}
+		 
+});
+$("#NewModelProvince").change(function(){
+	$("#NewModelCity").empty();//清空所有的城市opotion
+	
+ 	if($("#NewModelProvince").val() == "" || $("#NewModelProvince").val() == null) 
+		{
+			$("#div_NewModelProvince .ok").removeClass("img_ok");
+			$("#div_NewModelCity .ok").removeClass("img_ok");
+ 			$("#model_errorInfo2").html("必选省份!");
+ 			$("#model_errorInfo3").html("必选城市!");
+ 			
+		}
+	else
+		{
+			$("#model_errorInfo2").html(""); 
+			$("#model_errorInfo3").html("");
+			$("#div_NewModelProvince .ok").addClass("img_ok");
+			/*发ajax请求,初始化城市列表*/
+			 $.ajax({
+		         type: "GET",
+		         url: "/week2/QueryProvince.do",
+		         contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		         data:{provinceid:$("#NewModelProvince").val()},
+		         dataType: "json",	             
+		         success: function (data) {  
+		        	 //console.log(data);
+		        	 for(var i = 0;i < data.length; i++)
+		        		 {
+		        		    $("#NewModelCity").append("<option value='"+data[i].cityId+"'>"+data[i].cityName+"</option>");
+		        		 	//为Select追加一个Option(下拉项)
+		        		 	
+		        		 	//获得了城市的下拉列表
+		        			$("#div_NewModelCity .ok").addClass("img_ok");
+		        			
+		        		 }
+		         },
+		         error: function (error) {
+		        	 
+		             alert("请求后台失败！");
+		         }
+		}); 			
+		}		
+});
+$("#NewModelProvince").blur(function(){
+ 	if($("#NewModelCity").val() == "" || $("#NewModelCity").val() == null) 
+		{
+ 			$("#model_errorInfo2").html("必选省份!");
+ 			
+		}
+	else
+		{
+			$("#model_errorInfo2").html("");
+			
+		}
+		  
+});
+$("#NewModelCity").blur(function(){
+ 	if($("#NewModelCity").val() == "" || $("#NewModelCity").val() == null) 
+		{
+ 			$("#model_errorInfo3").html("必选城市!");
+ 			
+		}
+	else
+		{
+			$("#model_errorInfo3").html("");
+			
+		}
+		  
+});
+$("#NewModelEmail").blur(function(){
+ 	if($("#NewModelEmail").val() == "" || $("#NewModelEmail").val() == null) 
+		{
+	 		$("#div_NewModelEmail .error").removeClass("img_ok");
+			$("#div_NewModelEmail .ok").removeClass("img_ok");
+ 			$("#model_errorInfo4").html("邮箱不能空!");
+ 			
+		}
+	else
+		{
+			$("#model_errorInfo4").html(""); 
+			var patt = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+			if(patt.test($("#NewModelEmail").val()))
+				{
+					$("#div_NewModelEmail .error").removeClass("img_ok");
+					$("#div_NewModelEmail .ok").addClass("img_ok");
+										
+				}	
+			else
+				{
+					$("#div_NewModelEmail .ok").removeClass("img_ok");
+					$("#div_NewModelEmail .error").addClass("img_ok");
+					toastr.warning("邮箱格式不正确！");
+					
+				}						
+		}
+		 
+});
+$("#NewModelPsd").blur(function(){
+ 	if($("#NewModelPsd").val() == "" || $("#NewModelPsd").val() == null) 
+		{
+	 		$("#div_NewModelPsd .error").removeClass("img_ok");
+			$("#div_NewModelPsd .ok").removeClass("img_ok");
+ 			$("#model_errorInfo5").html("密码不能空!");
+ 			
+		}	
+	else
+		{
+			$("#model_errorInfo5").html("");
+			var patt = /^.{4,15}$/;
+			if(patt.test($("#NewModelPsd").val()))
+				{
+					$("#div_NewModelPsd .error").removeClass("img_ok");
+					$("#div_NewModelPsd .ok").addClass("img_ok");
+					if($("#NewModelpsd2").val() == $("#NewModelPsd").val())
+						{
+						 	$("#model_errorInfo6").html("");
+							$("#div_NewModelpsd2 .error").removeClass("img_ok");
+							$("#div_NewModelpsd2 .ok").addClass("img_ok");
+							
+						}
+					else
+						{
+							if($("#NewModelpsd2").val() != "")
+							{
+								$("#model_errorInfo6").css("padding","0 0 0 18px");
+								$("#div_NewModelpsd2 .ok").removeClass("img_ok");
+								$("#div_NewModelpsd2 .error").addClass("img_ok");			 	
+								$("#model_errorInfo6").html("密码不一致!");
+								
+							}
+						}
+										
+				}	
+			else
+				{
+					$("#div_NewModelPsd .ok").removeClass("img_ok");
+					$("#div_NewModelPsd .error").addClass("img_ok");
+					toastr.warning("密码长度为4-15位字符！");
+					
+				}			
+		}
+		  
+});
+$("#NewModelpsd2").bind('input propertychange',function(){
+	var patt = /^.{4,15}$/;
+	if($("#NewModelpsd2").val() == $("#NewModelPsd").val() &&　patt.test($("#NewModelPsd").val()))
+		{
+			$("#div_NewModelpsd2 .error").removeClass("img_ok");
+			$("#div_NewModelpsd2 .ok").addClass("img_ok");	
+			$("#model_errorInfo6").html("");
+		}
+	else{
+		$("#div_NewModelpsd2 .ok").removeClass("img_ok");
+		$("#div_NewModelpsd2 .error").addClass("img_ok");
+		if($("#NewModelpsd2").val() != $("#NewModelPsd").val()){
+			$("#model_errorInfo6").css("padding","0 0 0 18px");
+			$("#model_errorInfo6").html("密码不一致!");
+		}
+	}
+});
+$("#NewModelpsd2").blur(function(){
+ 	if($("#NewModelpsd2").val() == "" || $("#NewModelpsd2").val() == null) 
+ 		{
+	 		$("#div_NewModelpsd2 .error").removeClass("img_ok");
+			$("#div_NewModelpsd2 .ok").removeClass("img_ok");
+			$("#model_errorInfo6").css("padding","0 5px 0 0");
+ 			$("#model_errorInfo6").html("密码不能空!");
+ 			
+ 		}		
+	else
+		{
+			$("#model_errorInfo6").html("");
+		 	if($("#NewModelpsd2").val() != $("#NewModelPsd").val())
+				 {
+				 	$("#model_errorInfo6").css("padding","0 0 0 18px");
+				 	$("#div_NewModelpsd2 .ok").removeClass("img_ok");
+				 	$("#div_NewModelpsd2 .error").addClass("img_ok");			 	
+				 	$("#model_errorInfo6").html("密码不一致!");
+				 	
+				 }				
+			else
+			 	{			 	
+				 	var patt = /^.{4,15}$/;
+				 	if(patt.test($("#NewModelPsd").val()))
+				 	{					 	
+						$("#div_NewModelpsd2 .error").removeClass("img_ok");
+						$("#div_NewModelpsd2 .ok").addClass("img_ok");	
+						
+				 	}	
+				 	else
+				 	{
+						$("#div_NewModelpsd2 .ok").removeClass("img_ok");
+						$("#div_NewModelpsd2 .error").addClass("img_ok");
+						toastr.warning("密码长度为4-15位字符！");
+						
+				 	}
+			 	}			
+		}		   
+});
+/*登陆数据校验*/
+$("#userName").blur(function(){
+	if($("#userName").val() == "" || $("#userName").val() == null) 			
+		$("#error_Username").html("用户名不能为空！");	
+	else
+		$("#error_Username").html(""); 
+});
+$("#password").blur(function(){
+	if($("#password").val() == "" || $("#password").val() == null) 
+		$("#error_Userpsd").html("密码不能为空！");
+	else
+		$("#error_Userpsd").html(""); 
+});
+$("#VerificationCode").blur(function(){
+	if($("#VerificationCode").val() == "" || $("#VerificationCode").val() == null) 
+		$("#error_yzm").html("验证码不能为空！");
+	else
+		$("#error_yzm").html(""); 
+});
+/*
+ * 密码的显示与隐藏
+ */
+$("#lookPsd").click(function(){
+	if($("#NewModelpsd2").attr("type") == "password")
+		$("#NewModelpsd2").attr("type","text");
+	else
+		$("#NewModelpsd2").attr("type","password");
+});
+$("#lookpsd").click(function(){
+	if($("#NewModelPsd").attr("type") == "password")
+		$("#NewModelPsd").attr("type","text");
+	else
+		$("#NewModelPsd").attr("type","password");
+});
+
+/*
+ * 点击注册按钮注册一个用户
+ */
+ $("#addModelButton").click(function(){
+	 var flag = true;
+	 if($("#myModal_new .img_ok").length != 7)
+		 {
+		 	//console.log("ss");
+			toastr.warning("请输入正确格式的数据！"); 
+ 			return ;
+		 }
+	 //console.log("xx");
+	 $("#myModal_new .img_ok").each(function(){
+		 	if($(this).attr("src") != "img/ok.png")
+	 		{
+	 			toastr.warning("请输入正确格式的数据！"); 
+	 			flag = false;
+	 			return false;//提前结束循环
+	 		}
+	 });
+	 //console.log(flag);
+	 if(flag)
+		 {
+		 	 $.ajax({
+		         type: "GET",
+		         url: "/week2/UserCRUDController.do",
+		         contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		         data:{userName:$("#NewModelUserName").val(),chrName:$("#NewModelName").val(),
+		        	 province:$("#NewModelProvince").find("option:selected").text(),
+		        	 city:$("#NewModelCity").find("option:selected").text(),
+		        	 email:$("#NewModelEmail").val(),password:$("#NewModelpsd2").val()},
+		         dataType: "text",	           
+		         success: function (data) {  
+		        	 if(data == "0")
+		        		 {
+		        			 toastr.error("该用户名已被其他用户使用！"); 
+		        		 }
+		        	 else if(data == "1")
+		        		 {
+		        		 	$("#myModal_new").modal('hide');
+		        		 	toastr.success("注册成功！");
+		        		 }
+		        	 else
+		        		 {
+		        		 	toastr.error("注册失败！");
+		        		 }
+		         },
+		         error: function (error) {
+		             alert("请求后台失败！");
+		         }
+			})
+		}
+ });
+</script>
+<script>
+function setCookie() {
+    var userName = $("#userName").val(); // 用户名
+    var passWord = $("#password").val(); //密码
+    var cookieName = 'userInfo' ;// cookie名称
+    var data = {
+        username: userName,
+        password: passWord
+    };
+    var d = new Date();
+    var saveTime = 7;// cookie保存时间（单位：天）
+    d.setDate(d.getDate() + saveTime);
+    document.cookie = cookieName + '=' + JSON.stringify(data) + ';expires=' + d.toGMTString();
+}  
+
+
+function getCookie() {
+    var cookie = document.cookie;
+    var cookieName = 'userInfo' ;// cookie名称
+    var arr = cookie.split('; '); // 将cookie信息和时间戳拆分为数组
+    var userInfo = null;
+    for (var i = 0; i < arr.length; i++) {
+        var tempArr = arr[i].split('='); // 将cookie名称和data拆分开，分别是数组的第一个元素和第二个元素
+        if (tempArr[0] === cookieName) {
+            userInfo = JSON.parse(tempArr[1]);
+        }
+    }
+    var obj = eval(userInfo);
+     
+    //console.log(obj);  
+    
+    if (userInfo) {
+		 $.ajax({
+	            type: "POST",
+	            url: "/week2/LoginController.do",
+	            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+	            data:{userName:obj.username,password:obj.password,VerificationCode:'0'},
+	            dataType: "text",	           
+	            success: function (data) {  
+	            	if(data == "success")
+	            		{
+	            			window.location.href = "main.jsp";  
+	            		}	            		          			            	
+	            },
+	            error: function (error) {
+	                alert("请求后台失败！");
+	            }
+	})
+        //console.log(); 
+    }
+}
+ 
+</script>
+<script>
+	$("#btn_login").click(function(){
+		 $.ajax({
+	            type: "POST",
+	            url: "/week2/LoginController.do",
+	            contentType: "application/x-www-form-urlencoded;charset=utf-8",
+	            data:{userName:$("#userName").val(),password:$("#password").val(),VerificationCode:$("#VerificationCode").val()},
+	            dataType: "text",	           
+	            success: function (data) { 
+	            	if(data != "success")
+	            		{
+	            			toastr.error(data);  
+	            		}
+	            	else{
+	            		if( $('#checkbox').is(':checked'))
+	            			{
+	            				setCookie(); //如果勾选就设置cookie
+	            			}         			
+	            		window.location.href = "main.jsp";            		
+	            	}
+	            },
+	            error: function (error) {
+	                alert("error=" + error);
+	            }
+	})
+	});
+</script>
+<script>
+      var img = $("#yzmimg");
+      //console.log("img", img)
+      img.click(function(){
+        img.attr('src', '/week2/CreateVCodeImageController.do?t=' + Math.random());
+      });
+</script>
+<script>
+var index = 1;
+var timer;
+timer = setInterval(function () {
+index%=5;
+$("body").css("transition","none");
+$("body").css("background-image","url(img/login" + index+ ".jpg)");
+$("body").css("transition","all 3s ease");
+index++;
+},4500);
+</script>
+</html>
